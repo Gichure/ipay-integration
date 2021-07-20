@@ -1,11 +1,16 @@
 <?php
 
-require_once '../services/iPayService.php';
+require_once 'services/iPayService.php';
+
+$message = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $reference = sanitize($_POST["reference"]);
         $service = new iPayService();
-        $service->checkTransactionStatus($reference);
+        $response = $service->checkTransactionStatus($reference);
+        $response = json_decode($response);
+        $message = $response->message;
+        
     }
     
     function sanitize($data) {
@@ -41,10 +46,10 @@ require_once '../services/iPayService.php';
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link" href="../">Send Money</a>
+            <a class="nav-link" href=".">Send Money</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Check Status</a>
+            <a class="nav-link" href="check-status.php">Check Status</a>
         </li>
     </ul>
 </div>
@@ -53,7 +58,8 @@ require_once '../services/iPayService.php';
 <div class="container mt-5">
 <div class="row" align="center">
     <div class="col-sm">
-        <h1>iPay B2C API Integration</h1>
+        <h1>Check Status</h1>
+        <p><?php echo $message; ?>
     </div>
 </div>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

@@ -52,19 +52,15 @@ class iPay{
                     curl_setopt($curl, CURLOPT_POST, true);
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $datastring);
                     $serverResponse = curl_exec($curl);
-                    $error = curl_error($curl);
                     curl_close($curl);
-                    if($error != null){
-                        return json_decode($serverResponse);
-                    }else
-                        throw new \Exception($error);
+                    
+                    return json_decode($serverResponse);
+                    
                 } catch (\Exception $e) {
-                    var_dump($e);
                     throw new \Exception($e->getMessage());
                 }
                 
             } catch (\Exception $e) {
-                var_dump($e);
                 throw new \Exception($e->getMessage());
             }
     }
@@ -91,12 +87,8 @@ class iPay{
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $datastring);
             $serverResponse = curl_exec($curl);
-            $error = curl_error($curl);
             curl_close($curl);
-            if($error != null){
-                return json_decode($serverResponse);
-            }else
-                throw new \Exception($error);
+            return json_decode($serverResponse);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'services/iPayService.php';
-
+$message = "";
     
     $phone = "254720000000";
     
@@ -12,7 +12,9 @@ require_once 'services/iPayService.php';
         $amount = sanitize($_POST["amount"]);
         $reference = rand(1,999999);
         $service = new iPayService();
-        $service->initiateTransaction($amount, $reference, $phone);
+        $response = $service->initiateTransaction($amount, $reference, $phone);
+        $response = json_decode($response);
+        $message = $response->message;
         
     }
     
@@ -30,13 +32,11 @@ require_once 'services/iPayService.php';
 
 
 <html>
-
-<header>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-</header>
+    <header>
+    <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </header>
 <body>
 
 <!-- navbar -->
@@ -53,7 +53,7 @@ require_once 'services/iPayService.php';
             <a class="nav-link" href="#">Send Money</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="./check_status.php">Check Status</a>
+            <a class="nav-link" href="./check-status.php">Check Status</a>
         </li>
     </ul>
 </div>
@@ -64,6 +64,7 @@ require_once 'services/iPayService.php';
 <div class="row" align="center">
     <div class="col-sm">
         <h1>Send Money</h1>
+        <p><?php echo $message; ?>
     </div>
 </div>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

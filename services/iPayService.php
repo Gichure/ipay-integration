@@ -16,11 +16,11 @@ class iPayService{
         
         $response = $ipay->initiateTransaction($transaction);
         
-        if($response->status == 200)
-            echo 'Your transaction has been received. Ref ID: '.$response->reference;
-        else 
-            echo 'We encountered and error.';
-        
+        if($response->error != null){
+            return json_encode(array('message' => $response->error, 'status'=>false));
+        }else{
+            return json_encode(array('message' => 'Your transaction has been received. Ref ID: '.$response->reference, 'status'=>true));
+        }
     }
     
     function checkTransactionStatus($reference){
@@ -29,10 +29,12 @@ class iPayService{
         
         $response = $ipay->checkTransactionStatus($reference);
         
-        if($response->status == 200)
-            echo 'Your was successfule. Receipt Number: '.$response->mmref;
-        else
-            echo 'We encountered and error.';
+        if($response->error != null){
+            return json_encode(array('message' => $response->error, 'status'=>false));
+        }else{
+            return json_encode(array('message' => 'Your was successfule. Receipt Number: '.$response->mmref, 'status'=>true));
+        }
+        
     }
 }
 
